@@ -393,7 +393,9 @@ func resolve(t *Type) error {
 func (g *Graph) Tables() (all []*schema.Table) {
 	tables := make(map[string]*schema.Table)
 	for _, n := range g.Nodes {
-		table := schema.NewTable(n.Table()).AddPrimary(n.ID.PK())
+		table := schema.NewTable(n.Table()).
+			AddPrimary(n.ID.PK()).
+			SetAnnotation(n.EntSQL())
 		for _, f := range n.Fields {
 			table.AddColumn(f.Column())
 		}
@@ -401,7 +403,7 @@ func (g *Graph) Tables() (all []*schema.Table) {
 		all = append(all, table)
 	}
 	for _, n := range g.Nodes {
-		// Foreign key + reference OR join table.
+		// Foreign key + reference or a join table.
 		for _, e := range n.Edges {
 			if e.IsInverse() {
 				continue
@@ -492,7 +494,7 @@ type Snapshot struct {
 	Features []string
 }
 
-// MarshalSchema returns a JSON string represents the graph schema in loadable format.
+// SchemaSnapshot returns a JSON string represents the graph schema in loadable format.
 func (g *Graph) SchemaSnapshot() (string, error) {
 	schemas := make([]*load.Schema, len(g.Nodes))
 	for i := range g.Nodes {

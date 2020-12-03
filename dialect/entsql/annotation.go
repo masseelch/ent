@@ -16,7 +16,40 @@ type Annotation struct {
 	//		Table: "Users",
 	//	}
 	//
-	Table string
+	Table string `json:"table,omitempty"`
+
+	// Charset defines the character-set of the table. For example:
+	//
+	//	entsql.Annotation{
+	//		Charset: "utf8mb4",
+	//	}
+	//
+	Charset string `json:"charset,omitempty"`
+
+	// Collation defines the collation of the table (a set of rules for comparing
+	// characters in a character set). For example:
+	//
+	//	entsql.Annotation{
+	//		Collation: "utf8mb4_bin",
+	//	}
+	//
+	Collation string `json:"collation,omitempty"`
+
+	// Options defines the additional table options. For example:
+	//
+	//	entsql.Annotation{
+	//		Options: "ENGINE = INNODB",
+	//	}
+	//
+	Options string `json:"options,omitempty"`
+
+	// Size defines the column size in the generated schema. For example:
+	//
+	//	entsql.Annotation{
+	//		Size: 128,
+	//	}
+	//
+	Size int64 `json:"size,omitempty"`
 }
 
 // Name describes the annotation name.
